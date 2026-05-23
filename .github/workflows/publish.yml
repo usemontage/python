@@ -1,13 +1,16 @@
 name: Publish to PyPI
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'publish' to publish montageai."
+        required: true
+        type: string
 
 jobs:
   publish:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.confirm == 'publish' }}
     runs-on: ubuntu-latest
     environment: pypi-publish
     permissions:
@@ -25,4 +28,3 @@ jobs:
       - run: python -m build
 
       - uses: pypa/gh-action-pypi-publish@release/v1
-

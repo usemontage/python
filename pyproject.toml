@@ -15,6 +15,11 @@ dependencies = [
     "pydantic>=2.0,<3",
 ]
 
+[project.urls]
+Homepage = "https://usemontage.ai"
+Repository = "https://github.com/usemontage/python"
+Issues = "https://github.com/usemontage/python/issues"
+
 [project.optional-dependencies]
 crewai = ["crewai>=0.80"]
 langgraph = ["langgraph>=0.2", "langchain-core>=0.3"]
@@ -49,4 +54,3 @@ ignore_missing_imports = true
 [tool.ruff]
 target-version = "py310"
 line-length = 100
-

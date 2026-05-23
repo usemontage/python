@@ -36,6 +36,9 @@ The workflow builds the sdist/wheel and publishes through `pypa/gh-action-pypi-p
 
 ## Current first-publish failure
 
+Manual workflow run `26321262475` reached the PyPI publish action after a
+successful build, then failed during the trusted-publishing token exchange.
+
 If PyPI returns:
 
 ```text
@@ -43,3 +46,12 @@ invalid-publisher: valid token, but no corresponding publisher
 ```
 
 then the GitHub workflow is valid, but PyPI does not yet have a trusted publisher matching the repository, workflow file, and `pypi-publish` environment.
+
+Use these claims when configuring the PyPI trusted publisher:
+
+- Project: `montageai`
+- Owner: `usemontage`
+- Repository name: `python`
+- Workflow name: `publish.yml`
+- Environment name: `pypi-publish`
+- Workflow ref: `usemontage/python/.github/workflows/publish.yml@refs/heads/main`

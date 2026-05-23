@@ -26,6 +26,20 @@ def test_json_tool_specs_are_available_without_optional_dependencies() -> None:
 
 
 def test_optional_tool_modules_import_without_framework_packages() -> None:
+    from montageai import tools
+
+    assert set(tools.__all__) >= {
+        "ag2",
+        "aws_bedrock",
+        "claude_sdk",
+        "crewai",
+        "google_adk",
+        "langgraph",
+        "llamaindex",
+        "openai_sdk",
+        "pydantic_ai",
+        "strands",
+    }
     assert callable(ag2.montage_tool)
     assert callable(aws_bedrock.montage_tool)
     assert callable(crewai.montage_tool)
@@ -34,4 +48,3 @@ def test_optional_tool_modules_import_without_framework_packages() -> None:
     assert callable(llamaindex.montage_tool)
     assert callable(pydantic_ai.montage_tool)
     assert callable(strands.montage_tool)
-

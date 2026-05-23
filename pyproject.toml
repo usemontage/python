@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "montageai"
+version = "0.1.0"
+description = "Montage Python SDK - production UI on demand at scale"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.27,<1",
+    "httpx-sse>=0.4,<1",
+    "pydantic>=2.0,<3",
+]
+
+[project.optional-dependencies]
+crewai = ["crewai>=0.80"]
+langgraph = ["langgraph>=0.2", "langchain-core>=0.3"]
+pydantic-ai = ["pydantic-ai>=0.1"]
+google-adk = ["google-adk>=0.1"]
+llamaindex = ["llama-index-core>=0.11"]
+aws-bedrock = ["strands-agents>=0.1"]
+ag2 = ["ag2>=0.6"]
+claude-sdk = ["anthropic>=0.40"]
+openai-sdk = ["openai>=1.60"]
+strands = ["strands-agents>=0.1"]
+all = [
+    "montageai[crewai,langgraph,pydantic-ai,google-adk,llamaindex,aws-bedrock,ag2,claude-sdk,openai-sdk,strands]",
+]
+dev = [
+    "build>=1.2",
+    "mypy>=1.11",
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "respx>=0.22",
+    "ruff>=0.7",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["src"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+

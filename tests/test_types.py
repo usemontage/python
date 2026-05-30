@@ -57,6 +57,12 @@ def test_stream_event_done() -> None:
     assert event.html is not None
 
 
+def test_stream_event_artifact() -> None:
+    event = StreamEvent(type="artifact", html="<html></html>", id="gen_abc", credits_used=3)
+    assert event.type == "artifact"
+    assert event.html is not None
+
+
 def test_stream_event_status() -> None:
     event = StreamEvent(type="status", text="Generating...")
     assert event.text == "Generating..."
@@ -70,4 +76,3 @@ def test_generation_diagnostic() -> None:
         message="Handler 'onClick' has no target state",
     )
     assert diag.severity == "warning"
-

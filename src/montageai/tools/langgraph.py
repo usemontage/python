@@ -13,10 +13,10 @@ class MontageInput(BaseModel):
     data_info: str = Field("", description="JSON data context.")
 
 
-def montage_tool(api_key: str, **defaults: Any) -> Any:
+def montage_tool(api_key: str, api_url: str | None = None, **defaults: Any) -> Any:
     from langchain_core.tools import StructuredTool
 
-    client = MontageClient(api_key=api_key)
+    client = MontageClient(api_key=api_key, api_url=api_url)
     fn = base_generate_fn(client, **defaults)
     return StructuredTool.from_function(
         func=fn,
@@ -24,4 +24,3 @@ def montage_tool(api_key: str, **defaults: Any) -> Any:
         description="Generate a production UI artifact from a prompt and data context.",
         args_schema=MontageInput,
     )
-

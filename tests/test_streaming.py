@@ -14,6 +14,7 @@ SSE_BODY = (
     'data: {"type":"status","text":"Generating..."}\n\n'
     'data: {"type":"shell","html":"<html><div id=\\"s1\\"></div></html>"}\n\n'
     'data: {"type":"slot","slot":"s1","html":"<p>Hello</p>"}\n\n'
+    'data: {"type":"artifact","html":"<html><p>Hello</p></html>","id":"gen_mid","creditsUsed":2}\n\n'
     'data: {"type":"done","html":"<html><p>Hello</p></html>","id":"gen_abc","creditsUsed":3}\n\n'
 )
 
@@ -24,9 +25,10 @@ def test_stream_events_sync(mock_transport: Any) -> None:
         transport=mock_transport(lambda request: httpx.Response(200, content=SSE_BODY.encode())),
     )
     events = list(client.stream(prompt="test", data_info=""))
-    assert [event.type for event in events] == ["status", "shell", "slot", "done"]
+    assert [event.type for event in events] == ["status", "shell", "slot", "artifact", "done"]
     assert events[2].slot == "s1"
-    assert events[3].credits_used == 3
+    assert events[3].credits_used == 2
+    assert events[4].credits_used == 3
 
 
 @pytest.mark.asyncio
@@ -38,7 +40,6 @@ async def test_stream_events_async(mock_transport: Any) -> None:
     events: list[StreamEvent] = []
     async for event in client.stream(prompt="test", data_info=""):
         events.append(event)
-    assert len(events) == 4
+    assert len(events) == 5
     assert events[0].text == "Generating..."
     assert events[-1].type == "done"
-

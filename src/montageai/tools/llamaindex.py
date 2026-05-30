@@ -6,13 +6,12 @@ from montageai._client import MontageClient
 from montageai.tools._base import base_generate_fn
 
 
-def montage_tool(api_key: str, **defaults: Any) -> Any:
+def montage_tool(api_key: str, api_url: str | None = None, **defaults: Any) -> Any:
     from llama_index.core.tools import FunctionTool
 
-    client = MontageClient(api_key=api_key)
+    client = MontageClient(api_key=api_key, api_url=api_url)
     return FunctionTool.from_defaults(
         fn=base_generate_fn(client, **defaults),
         name="montage_generate",
         description="Generate a production UI artifact from a prompt and data context.",
     )
-

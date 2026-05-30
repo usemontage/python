@@ -69,6 +69,10 @@ class GenerateRequest(MontageModel):
     required_capabilities: list[str] | None = Field(None, alias="requiredCapabilities")
     interactive: bool | None = None
     zeroed: bool | None = None
+    streaming: bool | None = None
+    output: Literal["html", "fragment"] | None = None
+    request_id: str | None = Field(None, alias="requestId")
+    include_html: bool | None = Field(None, alias="includeHtml")
 
 
 class GenerationDiagnostic(MontageModel):
@@ -86,19 +90,29 @@ class GenerationResolution(MontageModel):
     duration_ms: int | None = Field(None, alias="durationMs")
 
 
+class ArtifactParts(MontageModel):
+    fragment: str
+    styles: str | None = None
+    stylesheets: list[str] | None = None
+    scripts: list[str] | None = None
+    external_scripts: list[str] | None = Field(None, alias="externalScripts")
+
+
 class GenerateResult(MontageModel):
     id: str
     html: str
     credits_used: int = Field(alias="creditsUsed")
     artifact_id: str | None = Field(None, alias="artifactId")
     version: str | None = None
+    html_bundle_ref: str | None = Field(None, alias="htmlBundleRef")
     hosted_url: str | None = Field(None, alias="hostedUrl")
     resolution: GenerationResolution | None = None
     diagnostics: list[GenerationDiagnostic] | None = None
+    parts: ArtifactParts | None = None
 
 
 class StreamEvent(MontageModel):
-    type: Literal["shell", "slot", "status", "done", "error", "debug"]
+    type: Literal["shell", "slot", "status", "done", "artifact", "error", "debug"]
     html: str | None = None
     text: str | None = None
     slot: str | None = None
@@ -110,8 +124,11 @@ class StreamEvent(MontageModel):
     cache_key: str | None = Field(None, alias="cacheKey")
     artifact_id: str | None = Field(None, alias="artifactId")
     version: str | None = None
+    html_bundle_ref: str | None = Field(None, alias="htmlBundleRef")
     hosted_url: str | None = Field(None, alias="hostedUrl")
+    resolution: GenerationResolution | None = None
     diagnostics: list[GenerationDiagnostic] | None = None
+    parts: ArtifactParts | None = None
 
 
 class Artifact(MontageModel):
@@ -165,4 +182,3 @@ class Component(MontageModel):
                 data["name"] = component_type
             return data
         return value
-
